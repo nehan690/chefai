@@ -1,0 +1,7 @@
+{
+  "name": "Copy of ChefAI - Smart Recipe Finder",
+  "description": "An AI-powered culinary assistant that suggests personalized recipes based on ingredients you have at home. Features ingredient recognition from images and nutritional analysis.",
+  "requestFramePermissions": [
+    "camera"
+  ]
+}
