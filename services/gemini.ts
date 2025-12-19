@@ -1,15 +1,18 @@
 import { GoogleGenAI, Type } from "@google/genai";
 import { Recipe, UserPreferences } from "../types";
 
-// Initialize the Gemini AI client
-const ai = new GoogleGenAI({ apiKey: process.env.API_KEY });
+// Helper to get key safely from multiple possible locations
+const getApiKey = () => {
+  return process.env.API_KEY || (window as any).process?.env?.API_KEY || "";
+};
 
-const RECIPE_MODEL = "gemini-2.5-flash";
+const RECIPE_MODEL = "gemini-3-flash-preview";
 
 /**
  * Identifies ingredients from a base64 encoded image string.
  */
 export const identifyIngredientsFromImage = async (base64Image: string): Promise<string[]> => {
+  const ai = new GoogleGenAI({ apiKey: getApiKey() });
   try {
     const response = await ai.models.generateContent({
       model: RECIPE_MODEL,
@@ -17,12 +20,12 @@ export const identifyIngredientsFromImage = async (base64Image: string): Promise
         parts: [
           {
             inlineData: {
-              mimeType: "image/jpeg", // Assuming JPEG for simplicity, can be dynamic if needed
+              mimeType: "image/jpeg",
               data: base64Image
             }
           },
           {
-            text: "Identify all the food ingredients visible in this image. Return ONLY a simple JSON list of strings, e.g., [\"apple\", \"milk\"]. Do not include quantities or adjectives unless necessary (e.g., 'ground beef')."
+            text: "Identify all the food ingredients visible in this image. Return ONLY a simple JSON list of strings, e.g., [\"apple\", \"milk\"]. Do not include quantities or adjectives unless necessary."
           }
         ]
       },
@@ -53,6 +56,7 @@ export const generateRecipes = async (
   ingredients: string[],
   preferences: UserPreferences
 ): Promise<Recipe[]> => {
+  const ai = new GoogleGenAI({ apiKey: getApiKey() });
   try {
     const prompt = `
       You are a world-class chef and nutritionist.
@@ -66,7 +70,7 @@ export const generateRecipes = async (
       It is okay to assume the user has basic pantry staples like salt, pepper, oil, flour, sugar, and water.
       
       For each recipe, estimate the nutritional values (macros).
-      Calculate a 'matchPercentage' based on how many of the User Ingredients are used vs how many extra are needed (excluding pantry staples).
+      Calculate a 'matchPercentage' based on how many of the User Ingredients are used vs how many extra are needed.
     `;
 
     const response = await ai.models.generateContent({
