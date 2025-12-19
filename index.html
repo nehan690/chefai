@@ -7,7 +7,7 @@
     <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     <script>
-      // Shim to prevent errors if process is accessed before build injection
+      // Global shim for environments that expect process.env
       window.process = window.process || { env: { API_KEY: "" } };
       
       tailwind.config = {
@@ -26,7 +26,7 @@
       }
     </script>
     <style>
-      body { background-color: #F8FAFC; font-family: 'Inter', sans-serif; }
+      body { background-color: #F8FAFC; font-family: 'Inter', sans-serif; margin: 0; padding: 0; }
       .animate-fadeIn { animation: fadeIn 0.5s ease-out forwards; }
       .animate-slideIn { animation: slideIn 0.3s ease-out forwards; }
       @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
@@ -55,7 +55,7 @@
 </head>
   <body>
     <div id="root"></div>
-    <!-- Entry point for Vite -->
-    <script type="module" src="./index.tsx"></script>
+    <!-- Script path relative to the HTML file -->
+    <script type="module" src="/index.tsx"></script>
   </body>
 </html>

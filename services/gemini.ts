@@ -12,7 +12,10 @@ const RECIPE_MODEL = "gemini-3-flash-preview";
  * Identifies ingredients from a base64 encoded image string.
  */
 export const identifyIngredientsFromImage = async (base64Image: string): Promise<string[]> => {
-  const ai = new GoogleGenAI({ apiKey: getApiKey() });
+  const apiKey = getApiKey();
+  if (!apiKey) throw new Error("API Key is not configured.");
+  
+  const ai = new GoogleGenAI({ apiKey });
   try {
     const response = await ai.models.generateContent({
       model: RECIPE_MODEL,
@@ -56,7 +59,10 @@ export const generateRecipes = async (
   ingredients: string[],
   preferences: UserPreferences
 ): Promise<Recipe[]> => {
-  const ai = new GoogleGenAI({ apiKey: getApiKey() });
+  const apiKey = getApiKey();
+  if (!apiKey) throw new Error("API Key is not configured.");
+
+  const ai = new GoogleGenAI({ apiKey });
   try {
     const prompt = `
       You are a world-class chef and nutritionist.

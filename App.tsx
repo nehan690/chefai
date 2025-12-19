@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { ChefHat, Sparkles, AlertCircle, ArrowLeft, Key } from 'lucide-react';
+import { ChefHat, Sparkles, AlertCircle, ArrowLeft, Key, Info } from 'lucide-react';
 import { IngredientInput } from './components/IngredientInput';
 import { PreferencesPanel } from './components/PreferencesPanel';
 import { RecipeCard } from './components/RecipeCard';
@@ -25,8 +25,10 @@ const App: React.FC = () => {
   const [hasApiKey, setHasApiKey] = useState(true);
 
   useEffect(() => {
-    // Check if API key is present to prevent blank screen errors on deployment
-    if (!process.env.API_KEY) {
+    // Robust check for API key availability
+    const apiKey = process.env.API_KEY || (window as any).process?.env?.API_KEY;
+    if (!apiKey || apiKey === "") {
+      console.warn("ChefAI: API_KEY is missing from environment variables.");
       setHasApiKey(false);
     }
   }, []);
@@ -77,7 +79,7 @@ const App: React.FC = () => {
       setView('results');
     } catch (err) {
       console.error(err);
-      setError("Failed to generate recipes. Please try again later.");
+      setError("Failed to generate recipes. Please check your API key or try again later.");
     } finally {
       setLoadingState('idle');
     }
@@ -91,17 +93,29 @@ const App: React.FC = () => {
   if (!hasApiKey) {
     return (
       <div className="min-h-screen flex items-center justify-center bg-gray-50 p-4">
-        <div className="max-w-md w-full bg-white p-8 rounded-3xl shadow-xl text-center">
-          <div className="w-16 h-16 bg-red-100 text-red-600 rounded-full flex items-center justify-center mx-auto mb-6">
+        <div className="max-w-md w-full bg-white p-8 rounded-3xl shadow-xl text-center border border-gray-100">
+          <div className="w-16 h-16 bg-amber-100 text-amber-600 rounded-full flex items-center justify-center mx-auto mb-6">
             <Key size={32} />
           </div>
-          <h1 className="text-2xl font-bold text-gray-900 mb-2">API Key Missing</h1>
+          <h1 className="text-2xl font-bold text-gray-900 mb-2">Setup Required</h1>
           <p className="text-gray-600 mb-6">
-            To use ChefAI, you need to provide a Google Gemini API Key in your environment variables.
+            ChefAI requires a <strong>Gemini API Key</strong> to function. 
           </p>
-          <div className="bg-gray-50 p-4 rounded-xl text-left text-sm font-mono text-gray-500 break-all">
-            process.env.API_KEY is currently undefined.
+          <div className="bg-blue-50 p-4 rounded-xl text-left text-sm text-blue-800 mb-6 flex gap-3">
+            <Info size={24} className="flex-shrink-0" />
+            <div>
+              <p className="font-semibold mb-1">How to fix this:</p>
+              <ol className="list-decimal ml-4 space-y-1 opacity-90">
+                <li>Go to Vercel/Netlify settings</li>
+                <li>Add Environment Variable <strong>API_KEY</strong></li>
+                <li>Paste your key from Google AI Studio</li>
+                <li>Redeploy the project</li>
+              </ol>
+            </div>
           </div>
+          <p className="text-xs text-gray-400 italic">
+            Note: If you are testing locally, ensure you have a .env file with VITE_API_KEY.
+          </p>
         </div>
       </div>
     );
