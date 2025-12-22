@@ -3,7 +3,10 @@ import { Recipe, UserPreferences } from "../types";
 
 // Helper to get key safely from multiple possible locations
 const getApiKey = () => {
-  return process.env.API_KEY || (window as any).process?.env?.API_KEY || "";
+  const viteKey = (typeof import.meta !== "undefined" && (import.meta as any).env?.VITE_API_KEY) as string | undefined;
+  const serverKey = process.env.API_KEY;
+  const windowKey = typeof window !== "undefined" ? (window as any).process?.env?.API_KEY : undefined;
+  return viteKey || serverKey || windowKey || "";
 };
 
 const RECIPE_MODEL = "gemini-3-flash-preview";
