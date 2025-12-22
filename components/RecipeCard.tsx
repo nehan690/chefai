@@ -1,5 +1,5 @@
 import React from 'react';
-import { Recipe } from '../types';
+import { Recipe } from '../types.js';
 import { Clock, Flame, BarChart2, ArrowRight } from 'lucide-react';
 
 interface RecipeCardProps {

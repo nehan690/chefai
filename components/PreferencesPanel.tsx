@@ -1,5 +1,5 @@
 import React from 'react';
-import { UserPreferences } from '../types';
+import { UserPreferences } from '../types.js';
 import { ChefHat, Leaf, Globe, Clock } from 'lucide-react';
 
 interface PreferencesPanelProps {

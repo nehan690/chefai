@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { Recipe } from '../types';
+import { Recipe } from '../types.js';
 import { X, Clock, Flame, Users, ChefHat } from 'lucide-react';
 import { PieChart, Pie, Cell, ResponsiveContainer, Tooltip, Legend } from 'recharts';
 

@@ -1,5 +1,5 @@
 import { GoogleGenAI, Type } from "@google/genai";
-import { Recipe, UserPreferences } from "../types";
+import { Recipe, UserPreferences } from "../types.js";
 
 // Helper to get key safely from multiple possible locations
 const getApiKey = () => {

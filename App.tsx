@@ -1,11 +1,11 @@
 import React, { useState, useEffect } from 'react';
 import { ChefHat, Sparkles, AlertCircle, ArrowLeft, Key, Info } from 'lucide-react';
-import { IngredientInput } from './components/IngredientInput';
-import { PreferencesPanel } from './components/PreferencesPanel';
-import { RecipeCard } from './components/RecipeCard';
-import { RecipeModal } from './components/RecipeModal';
-import { Recipe, UserPreferences, LoadingState } from './types';
-import { generateRecipes, identifyIngredientsFromImage } from './services/gemini';
+import { IngredientInput } from './components/IngredientInput.js';
+import { PreferencesPanel } from './components/PreferencesPanel.js';
+import { RecipeCard } from './components/RecipeCard.js';
+import { RecipeModal } from './components/RecipeModal.js';
+import { Recipe, UserPreferences, LoadingState } from './types.js';
+import { generateRecipes, identifyIngredientsFromImage } from './services/gemini.js';
 
 const INITIAL_PREFERENCES: UserPreferences = {
   dietaryRestrictions: [],
