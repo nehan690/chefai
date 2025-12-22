@@ -1,13 +1,19 @@
+console.log("DEBUG VITE_API_KEY =", import.meta.env.VITE_API_KEY);
+
 import { GoogleGenAI, Type } from "@google/genai";
 import { Recipe, UserPreferences } from "../types.js";
 
 // Helper to get key safely from multiple possible locations
-const getApiKey = () => {
-  const viteKey = (typeof import.meta !== "undefined" && (import.meta as any).env?.VITE_API_KEY) as string | undefined;
-  const serverKey = process.env.API_KEY;
-  const windowKey = typeof window !== "undefined" ? (window as any).process?.env?.API_KEY : undefined;
-  return viteKey || serverKey || windowKey || "";
+const getApiKey = (): string => {
+  const key = import.meta.env.VITE_API_KEY as string | undefined;
+
+  if (!key || key.trim() === "") {
+    throw new Error("VITE_API_KEY is missing");
+  }
+
+  return key;
 };
+
 
 const RECIPE_MODEL = "gemini-3-flash-preview";
 

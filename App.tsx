@@ -26,9 +26,10 @@ const App: React.FC = () => {
 
   useEffect(() => {
     // Robust check for API key availability
-    const apiKey = process.env.API_KEY || (window as any).process?.env?.API_KEY;
-    if (!apiKey || apiKey === "") {
-      console.warn("ChefAI: API_KEY is missing from environment variables.");
+    if (!import.meta.env.VITE_API_KEY) {
+  console.error("ChefAI: VITE_API_KEY is missing from environment variables.");
+}
+      if (!import.meta.env.VITE_API_KEY || import.meta.env.VITE_API_KEY.trim() === "") {
       setHasApiKey(false);
     }
   }, []);
